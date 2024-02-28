@@ -1463,6 +1463,19 @@
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",
         "default": "scheme-1"
+      },
+      {
+        "type": "product",
+        "id": "shipping_protection_product",
+        "label": "t:settings_schema.cart.settings.shipping_protection_product.label",
+        "info": "t:settings_schema.cart.settings.shipping_protection_product.info"
+      },
+      {
+        "type": "number",
+        "id": "shipping_protection_product_percent",
+        "label": "t:settings_schema.cart.settings.shipping_protection_product_percent.label",
+        "info": "t:settings_schema.cart.settings.shipping_protection_product_percent.info",
+        "default": 1
       }
     ]
   }

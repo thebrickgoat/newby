@@ -12,6 +12,71 @@ class CartRemoveButton extends HTMLElement {
 
 customElements.define('cart-remove-button', CartRemoveButton);
 
+class CartCheckbox extends HTMLElement {
+  constructor() {
+    super();
+    const cartItems = document.querySelector('cart-items') || document.querySelector('cart-drawer-items');
+    const checkbox = this.querySelector('input');
+    const shippingProtectionProductId = 47883007099199;
+    const itemsInCart = document.querySelectorAll('.cart-item');
+    const isShippingProtectionProductInCart = Array.from(itemsInCart).find(
+      (item) => item.dataset.variantId == shippingProtectionProductId
+    );
+    if (isShippingProtectionProductInCart) {
+      checkbox.checked = true;
+    }
+    this.addEventListener('change', (event) => {
+      event.preventDefault();
+      const priceTotalElement = document.querySelector('.totals__total-value');
+      const quantity = Math.floor(parseFloat(priceTotalElement.textContent.replace('$', '')) * 0.05);
+      if (checkbox.checked) {
+        let formData = {
+          items: [
+            {
+              id: shippingProtectionProductId,
+              quantity: quantity,
+            },
+          ],
+        };
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => {
+            cartItems.onCartUpdate();
+            return response.json();
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      } else {
+        let updates = {
+          47883007099199: 0,
+        };
+        console.log(updates);
+        fetch(window.Shopify.routes.root + 'cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ updates }),
+        })
+          .then((response) => {
+            cartItems.onCartUpdate();
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      }
+    });
+  }
+}
+
+customElements.define('cart-checkbox', CartCheckbox);
+
 class CartItems extends HTMLElement {
   constructor() {
     super();
@@ -43,7 +108,12 @@ class CartItems extends HTMLElement {
   }
 
   onChange(event) {
-    this.updateQuantity(event.target.dataset.index, event.target.value, document.activeElement.getAttribute('name'), event.target.dataset.quantityVariantId);
+    this.updateQuantity(
+      event.target.dataset.index,
+      event.target.value,
+      document.activeElement.getAttribute('name'),
+      event.target.dataset.quantityVariantId
+    );
   }
 
   onCartUpdate() {

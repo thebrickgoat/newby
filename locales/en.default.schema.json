@@ -343,6 +343,14 @@
             "label": "Collection",
             "info": "Visible when cart drawer is empty."
           }
+        },
+        "shipping_protection_product":{
+          "label": "Shipping protection product",
+          "info": "This product will be added to the cart when the shipping production is enabled."
+        },
+        "shipping_protection_product_percent":{
+          "label": "Shipping protection percentage",
+          "info": "This amount (in percent of cart total) that will be added to the cart when the shipping production is enabled."
         }
       }
     },

@@ -9,8 +9,17 @@
 {%- if cart != empty -%}
   <div class="cart-count-bubble">
     {%- if cart.item_count < 100 -%}
-      <span aria-hidden="true">{{ cart.item_count }}</span>
+      {%- assign shipping_protection_count = 0 -%}
+      {%- for item in cart.items -%}
+        {%- if item.product.tags contains 'shipping-protection' -%}
+          {%- assign shipping_protection_count = shipping_protection_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- assign cart_count_minus_shipping_protection = cart.item_count | minus: shipping_protection_count -%}
+      <span aria-hidden="true">{{ cart_count_minus_shipping_protection }}</span>
     {%- endif -%}
-    <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+    <span class="visually-hidden">
+      {{- 'sections.header.cart_count' | t: count: cart_count_minus_shipping_protection -}}
+    </span>
   </div>
 {%- endif -%}
