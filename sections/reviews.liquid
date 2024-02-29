@@ -1,4 +1,58 @@
-<section class="icon-list section-{{ section.id }}"></section>
+<section class="icon-list section-{{ section.id }}">
+  <div class="tw-mx-auto tw-text-center">
+    <h2>{{ section.settings.title }}</h2>
+    <div>{{ section.settings.copy }}</div>
+  </div>
+  <div class="tw-grid tw-grid-cols-5">
+    {% for block in section.blocks %}
+      <div class="tw-block">
+        <p>{{ block.settings.text }}</p>
+        <img width="100px" height="100px" src="{{ block.settings.image | asset_url }}" alt="{{ block.settings.title }}">
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
 {% schema %}
-{}
+{
+  "name": "Review List",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Title",
+      "id": "title"
+    },
+    {
+      "type": "textarea",
+      "label": "Copy",
+      "id": "copy"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "limit": 5,
+
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "textarea",
+          "label": "Text",
+          "id": "text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "review-list",
+      "blocks": []
+    }
+  ]
+}
 {% endschema %}

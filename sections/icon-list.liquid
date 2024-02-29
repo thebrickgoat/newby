@@ -1,5 +1,73 @@
-<section class="icon-list section-{{ section.id }}"></section>
+<section class="icon-list section-{{ section.id }}">
+  <div class="tw-container tw-mx-auto tw-py-16">
+    <div class="tw-mx-auto tw-text-center tw-pb-8">
+      <h2>{{ section.settings.title }}</h2>
+      <div>{{ section.settings.copy }}</div>
+    </div>
+    <div class="tw-grid tw-grid-cols-4 tw-gap-16">
+      {% for block in section.blocks %}
+        <div class="tw-block tw-text-center">
+          <div class="tw-w-[100px] tw-h-[100px] tw-mx-auto tw-mb-8">
+            <img
+              width="100px"
+              height="100px"
+              class="tw-object-contain tw-w-full tw-h-full"
+              src="{{ block.settings.image  | image_url: width: 100}}"
+              alt="{{ block.settings.title }}"
+            >
+          </div>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
 {% schema %}
-{}
+{
+  "name": "Icon List",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Title",
+      "id": "title"
+    },
+    {
+      "type": "textarea",
+      "label": "Copy",
+      "id": "copy"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon-block",
+      "name": "Icon Block",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "text",
+          "label": "Title",
+          "id": "title"
+        },
+        {
+          "type": "textarea",
+          "label": "Text",
+          "id": "text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "icon-list",
+      "blocks": []
+    }
+  ]
+}
 {% endschema %}
